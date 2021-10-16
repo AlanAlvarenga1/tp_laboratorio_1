@@ -72,7 +72,7 @@ int main(void) {
 				}
 				break;
 			case 5:
-				printf ("Thank you for using this program. Bye!");
+				printf ("Thank you for using this program. Bye!!");
 				break;
 		}
 	}
