@@ -21,12 +21,12 @@ void showMenu (int* options) {
 
 }
 
-void subMenuModification(int *options,int id) {
+void subMenuModification(int *options,int id,int flag) {
 	int checkVar;
 
 	printf ("\n\n-------------------MODIFICATION-------------------\n\n");
-	if (id!=-1) {
-		printf ("The selected employee has the following ID: %d\n",id+1);
+	if (flag!=-1) {
+		printf ("The selected employee has the following ID: %d\n",id);
 	}
 	printf ("1) Enter the employee ID\n"
 			"2) Modify the name\n"

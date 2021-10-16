@@ -20,21 +20,21 @@ int initEmployees(Employee* list, int len) {
 
 void hardCodeEmployee(Employee* list,int* newestID,int* numberOfEmployee,int lenEmployee) {
 	int i;
-	int ids[] = {1,2,3};
+	//int ids[] = {1,2,3};
 	char names[][maxChar] = {"Joan","Albert","Jessica"};
 	char lastNames[][maxChar] = {"Smith","Johnston","Ferdinand"};
 	float salary[] = {3999.01,2549.99,6000.01};
 	int sector[] = {SECRETARY,SELLER,ACCOUNTANT};
 
 	for (i=0;i<lenEmployee;i++) {
-		list[i].id=ids[i];
+		//list[i].id=ids[i];
 		strcpy (list[i].name,names[i]);
 		strcpy (list[i].lastName,lastNames[i]);
 		list[i].salary=salary[i];
 		list[i].sector=sector[i];
 		list[i].isEmpty=FALSE;
 
-		*newestID=i+1;
+		*newestID=list[i].id;
 		*numberOfEmployee=*numberOfEmployee+1;
 	}
 }
@@ -105,14 +105,18 @@ void modifyEmployee (Employee* list) {
 	int option=0;
 	int id;
 	int i=-1;
+	int flagIdFound=-1;
 
 	while (option!=6) {
-		subMenuModification(&option,i);
+		subMenuModification(&option,id,flagIdFound);
 
 		switch (option) {
 			case 1:
 				if ((enterInt("Enter the ID of the employee: ","ERROR. You entered an illegal character. Try again: ",&id,1,1000))==0) {
 					i=findEmployeeById(list, maxEmployee,id);
+					if (i!=-1) {
+						flagIdFound=0;
+					}
 				}
 				break;
 			case 2:
@@ -120,7 +124,9 @@ void modifyEmployee (Employee* list) {
 					printf ("ERROR. You didn't enter an ID. First use the option 1");
 				}
 				else {
-					enterString ("Enter the new name: ","ERROR. You put an illegal character. Try again: ", list[i].name, maxChar);
+					if ((enterString ("Enter the new name: ","ERROR. You put an illegal character. Try again: ", list[i].name, maxChar))==0) {
+						printf ("The name was changed with exit");
+					}
 				}
 				break;
 			case 3:
@@ -128,7 +134,9 @@ void modifyEmployee (Employee* list) {
 					printf ("ERROR. You didn't enter an ID. First use the option 1");
 				}
 				else {
-					enterString ("Enter the new last name: ","ERROR. You put an illegal character. Try again: ", list[i].lastName, maxChar);
+					if ((enterString ("Enter the new last name: ","ERROR. You put an illegal character. Try again: ", list[i].lastName, maxChar))==0) {
+						printf ("The last name was changed with exit");
+					}
 				}
 				break;
 			case 4:
@@ -136,7 +144,9 @@ void modifyEmployee (Employee* list) {
 					printf ("ERROR. You didn't enter an ID. First use the option 1");
 				}
 				else {
-					enterFloat("Enter the new salary: ","ERROR. You put an illegal character. Try again: ",&list[i].salary,1000,20000);
+					if ((enterFloat("Enter the new salary: ","ERROR. You put an illegal character. Try again: ",&list[i].salary,1000,20000))==0) {
+						printf ("The salary was changed with exit");
+					}
 				}
 				break;
 			case 5:
@@ -144,7 +154,9 @@ void modifyEmployee (Employee* list) {
 					printf ("ERROR. You didn't enter an ID. First use the option 1");
 				}
 				else {
-					enterInt("Enter the new sector. 1=JANITOR 2=SELLER 3=SECRETARY 4=WATCHMAN 5=ACCOUNTANT 6=PRESIDENT: ","ERROR. You entered an illegal character. Try again: ",&list[i].sector,1,6);
+					if ((enterInt("Enter the new sector. 1=JANITOR 2=SELLER 3=SECRETARY 4=WATCHMAN 5=ACCOUNTANT 6=PRESIDENT: ","ERROR. You entered an illegal character. Try again: ",&list[i].sector,1,6))==0) {
+						printf ("The sector was changed with exit");
+					}
 				}
 				break;
 			case 6:
@@ -160,8 +172,8 @@ int removeEmployee(Employee* list, int len, int id) {
 	int returnal=-1;
 
 	while (confirm==1) {
-		for (i=0;i<len;i++) {
-			if (list[i].isEmpty==FALSE && list[i].id==id) {
+		i=findEmployeeById(list, len,id);
+			if (i!=-1) {
 				printf ("%-5s %-25s %-25s %-25s %-25s\n","ID","Name","Last Name","Salary","Sector");
 				printf ("%-5d %-25s %-25s %-25.2f %-25d\n",list[i].id,list[i].name,list[i].lastName,list[i].salary,list[i].sector);
 
@@ -180,11 +192,12 @@ int removeEmployee(Employee* list, int len, int id) {
 						enterInt("Enter the ID of the employee: ","ERROR. You entered an illegal character. Try again: ",&id,1,6);
 						break;
 				}
+				break;
+			}
+			else {
+				confirm=0;
 			}
 		}
-
-
-	}
 	return returnal;
 }
 
@@ -193,7 +206,7 @@ int findEmployeeById(Employee* list, int len,int id) {
 	int returnal = -1;
 
 	for(i=0; i<len; i++) {
-		if(list[i].isEmpty != TRUE && list[i].id == id) {
+		if(list[i].id == id && list[i].isEmpty != TRUE) {
 			returnal = i;
 			break;
 		}
@@ -208,54 +221,48 @@ int findEmployeeById(Employee* list, int len,int id) {
 int sortEmployees(Employee* list, int len, int order) {
 	int returnal=-1;
 	int i;
-	int limit;
-	int flagSwap;
+	int j;
 	Employee aux;
 
-	limit=len-1;
-	if (order==0) {
-		do {
-			flagSwap=0;
-			for (i=0;i<limit;i++) {
-				if (strcmp(list[i].lastName,list[i+1].lastName)>0) {
-					aux=list[i];
-					list[i]=list[i+1];
-					list[i+1]=aux;
-					flagSwap=1;
-				}
-				else if ((strcmp(list[i].lastName,list[i+1].lastName)==0) && (list[i].sector > list[i+1].sector)) {
-					aux=list[i];
-					list[i]=list[i+1];
-					list[i+1]=aux;
-					flagSwap=1;
-				}
-			}
-			limit--;
-		}while (flagSwap);
-		returnal=0;
-	}
-	else if (order==1) {
-		do {
-			flagSwap=0;
-			for (i=0;i<limit;i++) {
-				if (strcmp(list[i].lastName,list[i+1].lastName)<0) {
-					aux=list[i];
-					list[i]=list[i+1];
-					list[i+1]=aux;
-					flagSwap=1;
-				}
-				else if ((strcmp(list[i].lastName,list[i+1].lastName)==0) && (list[i].sector < list[i+1].sector)) {
-					aux=list[i];
-					list[i]=list[i+1];
-					list[i+1]=aux;
-					flagSwap=1;
-				}
-			}
-			limit--;
-		}while (flagSwap);
-		returnal=0;
-	}
 
+	if (order==0) {
+		for (i=0;i<len-1;i++) {
+			for(j=i+1;j<len;j++) {
+				if (list[i].isEmpty==FALSE && list[j].isEmpty==FALSE) {
+					if (strcmp(list[i].lastName,list[j].lastName)>0) {
+						aux=list[j];
+						list[j]=list[i];
+						list[i]=aux;
+					}
+					else if ((strcmp(list[i].lastName,list[j].lastName)==0) && (list[i].sector > list[j].sector)) {
+						aux=list[i];
+						list[i]=list[j];
+						list[j]=aux;
+					}
+				}
+			}
+		}
+		returnal=0;
+	}
+	else {
+		for (i=0;i<len-1;i++) {
+			for(j=i+1;j<len;j++) {
+				if (list[i].isEmpty==FALSE && list[j].isEmpty==FALSE) {
+					if (strcmp(list[i].lastName,list[j].lastName)<0) {
+						aux=list[j];
+						list[j]=list[i];
+						list[i]=aux;
+					}
+					else if ((strcmp(list[i].lastName,list[j].lastName)==0) && (list[i].sector < list[j].sector)) {
+						aux=list[i];
+						list[i]=list[j];
+						list[j]=aux;
+					}
+				}
+			}
+		}
+		returnal=0;
+	}
 	return returnal;
 }
 
