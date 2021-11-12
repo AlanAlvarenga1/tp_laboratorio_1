@@ -60,8 +60,8 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee) {
 int controller_addEmployee(LinkedList* pArrayListEmployee) {
 	int retorno=0;
 	Employee* nuevoEmpleado;
-	int llTam=ll_len(pArrayListEmployee);
-	int lastID;
+	FILE* lastID;
+	int intID;
 	char id[10];
 	char nombre[maxChar];
 	char horasTrabajadas[10];
@@ -69,10 +69,12 @@ int controller_addEmployee(LinkedList* pArrayListEmployee) {
 	int confirmar=0;
 
 	if (pArrayListEmployee!=NULL) {
-		lastID=employee_searchLastID(pArrayListEmployee,llTam);
+    	lastID=fopen("lastID.txt","r");
+		intID=employee_searchLastID(lastID);
+		fclose(lastID);
 
 		while (confirmar==0) {
-			itoa(lastID+1,id,10);
+			itoa(intID+1,id,10);
 			tomarString ("\n\nIngrese el nombre del empleado: ","ERROR. Has ingresado un caracter invalido. Intente nuevamente: ", nombre, maxChar);
 			tomarStringInt(horasTrabajadas,"Ingrese la cantidad de horas trabajadas: ","ERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,168);
 			tomarStringInt(sueldo,"Ingrese el sueldo del empleado: ","ERROR. Has ingresado un caracter invalido. Intente nuevamente: ",1000,100000);
@@ -88,7 +90,6 @@ int controller_addEmployee(LinkedList* pArrayListEmployee) {
 			switch (confirmar) {
 				case 1:
 					nuevoEmpleado=employee_new();
-
 					nuevoEmpleado=employee_newParametros(id,nombre,horasTrabajadas,sueldo);
 					ll_add(pArrayListEmployee,nuevoEmpleado);
 					retorno=1;
@@ -125,25 +126,32 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 	int nuevasHoras;
 	int nuevoSueldo;
 
-	int llTam=ll_len(pArrayListEmployee);
-	int lastID=employee_searchLastID(pArrayListEmployee,llTam);
+	char nombreAModificar[maxChar];
+	int horasAModificar;
+	int sueldoAModificar;
+
+	int lastID=employee_searchLastID;
 	Employee* empleadoAModificar;
 	Employee aux;
 
 	if (pArrayListEmployee!=NULL) {
 		do {
 			printf ("\n\n-------------------MODIFICACION-------------------\n\n");
-				if (flag!=-1) {
-					printf ("------------------------------------------------------------------------------------------------------------------------------\n");
-					printf ("%-10s %-25s %-25s %s","ID","Nombre","Horas laborales","Sueldo");
-					printf ("\n----------------------------------------EMPLEADO A MODIFICAR----------------------------------------------\n");
-					printUnEmpleado (empleadoAModificar);
-					if (flag==1) {
-						printf ("-----------------------------------EMPLEADO CON MODIFICACIONES--------------------------------------------\n");
-						printUnEmpleado (&aux);
-					}
-					printf ("------------------------------------------------------------------------------------------------------------------------------\n\n");
+			if (flag!=-1) {
+				printf ("------------------------------------------------------------------------------------------------------------------------------\n");
+				printf ("%-10s %-25s %-25s %s","ID","Nombre","Horas laborales","Sueldo");
+				printf ("\n----------------------------------------EMPLEADO A MODIFICAR----------------------------------------------\n");
+				printUnEmpleado (empleadoAModificar);
+				if (flag==1) {
+					printf ("-----------------------------------EMPLEADO CON MODIFICACIONES--------------------------------------------\n");
+					printUnEmpleado (&aux);
 				}
+				printf ("------------------------------------------------------------------------------------------------------------------------------\n\n");
+			}
+
+			employee_getNombre(empleadoAModificar,nombreAModificar);
+			employee_getHorasTrabajadas(empleadoAModificar,&horasAModificar);
+			employee_getSueldo(empleadoAModificar,&sueldoAModificar);
 
 			subMenuModificacionEmpleado(&opcion);
 
@@ -190,7 +198,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 
 					while (seguir==0) {
 						tomarString ("Ingrese el nuevo nombre: ","ERROR. Has ingresado un caracter invalido. Intente nuevamente: ", nuevoNombre, maxChar);
-						printf ("Desea cambiar el nombre de %s a %s?",empleadoAModificar->nombre, nuevoNombre);
+						printf ("Desea cambiar el nombre de %s a %s?",nombreAModificar, nuevoNombre);
 
 						tomarInt(&seguir,"\nSI=1 NO=0 SALIR=-1: ","ERROR. Has ingresado una opcion invalida. Intente nuevamente: ",-1,1);
 						if (seguir==1) {
@@ -222,7 +230,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 
 					while (seguir==0) {
 						tomarInt (&nuevasHoras,"Ingrese el nuevo horario: ","ERROR. Has ingresado un caracter invalido. Intente nuevamente: ", 0, 168);
-						printf ("Desea cambiar las horas de %d a %d?",empleadoAModificar->horasTrabajadas, nuevasHoras);
+						printf ("Desea cambiar las horas de %d a %d?",horasAModificar, nuevasHoras);
 
 						tomarInt(&seguir,"\nSI=1 NO=0 SALIR=-1: ","ERROR. Has ingresado una opcion invalida. Intente nuevamente: ",-1,1);
 						if (seguir==1) {
@@ -254,7 +262,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 
 					while (seguir==0) {
 						tomarInt (&nuevoSueldo,"\nIngrese el nuevo sueldo: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ", 1000, 100000);
-						printf ("Desea cambiar el sueldo de %d a %d?",empleadoAModificar->sueldo, nuevoSueldo);
+						printf ("Desea cambiar el sueldo de %d a %d?",sueldoAModificar, nuevoSueldo);
 
 						tomarInt(&seguir,"\nSI=1 NO=0 SALIR=-1: ","\nERROR. Has ingresado una opcion invalida. Intente nuevamente: ",-1,1);
 						if (seguir==1) {
@@ -343,8 +351,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 int controller_removeEmployee(LinkedList* pArrayListEmployee) {
 	int retorno=0;
 	int id;
-	int llTam=ll_len(pArrayListEmployee);
-	int lastID=employee_searchLastID(pArrayListEmployee,llTam);
+	int lastID=employee_searchLastID;
 	int confirmacion=0; //-1 SALIR	0 NO	1 SI
 	int posicionEmployee;
 	Employee* empleadoAEliminar;
@@ -408,7 +415,7 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee) {
 		printf ("------------------------------------------------------------------------------------------------------------------------------\n");
 		printf ("%-10s %-25s %-25s %s","ID","Nombre","Horas laborales","Sueldo");
 		printf ("\n------------------------------------------------------------------------------------------------------------------------------\n");
-		for (i=1;i<llTam;i++) {
+		for (i=0;i<llTam;i++) {
     		aux=(Employee*)ll_get(pArrayListEmployee,i);
     		printf ("%-10d %-25s %-25d %d\n",aux->id,aux->nombre,aux->horasTrabajadas,aux->sueldo);
 		}
@@ -429,25 +436,49 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee) {
 int controller_sortEmployee(LinkedList* pArrayListEmployee) {
 	int retorno=0;
 	int opcion=0;
+	int (*pFunc) (void*,void*);
+	int tipoDeOrden;
 
 	if (pArrayListEmployee!=NULL) {
-		while (opcion!=9) {
+		while (opcion!=5) {
 			subMenuOrdenamiento(&opcion);
 
 			switch (opcion) {
 				case 1:
+					pFunc=&employee_orderByID;
+					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
+					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
+
+					retorno=1;
 					break;
+				case 2:
+					pFunc=&employee_orderByName;
+					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
+					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
 
+					retorno=1;
+					break;
+				case 3:
+					pFunc=&employee_orderByHours;
+					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
+					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
 
+					retorno=1;
+					break;
+				case 4:
+					pFunc=&employee_orderBySalary;
+					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
+					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
+
+					retorno=1;
+					break;
+				case 5:
+					printf("\n\nSaliendo......\n");
+					break;
 			}
 		}
 	}
-
-
-
-
-
-    return 1;
+    return retorno;
 }
 
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
@@ -471,9 +502,9 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee) {
     if (path!=NULL && pArrayListEmployee!=NULL) {
     	pFile=fopen(path,"w");
 
-    	fprintf (pFile,"%s,%s,%s,%s\n","ID","Nombre","Horas trabajadas","Sueldo");
+    	fprintf (pFile,"%s\n","id,nombre,horasTrabajadas,sueldo");
 
-    	for (int i=1;i<llTam;i++) {
+    	for (int i=0;i<llTam;i++) {
     		aux=(Employee*)ll_get(pArrayListEmployee,i);
 
     		employee_getId(aux,&id);
@@ -506,9 +537,11 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee) {
     if (path!=NULL && pArrayListEmployee!=NULL) {
     	pFile=fopen(path,"wb");
 
-    	for (int i=1;i<llTam;i++) {
+    	for (int i=0;i<llTam;i++) {
     		aux=(Employee*)ll_get(pArrayListEmployee,i);
     		fwrite(aux,sizeof(Employee),1,pFile);
+
+    		printf ("\n\n%s\n",aux->nombre);
     	}
     	fclose(pFile);
     	retorno=1;

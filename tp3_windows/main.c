@@ -27,7 +27,7 @@ int main()
 	setbuf (stdout,NULL);
 
     int option = 0;
-    int flag=0; //0=SIN CARGAR 1=CARGADO 2=GUARDADO
+    int flag=0; //0=SIN CARGAR 1=CARGADO 2=MODIFICADO 3=GUARDADO
     int confirmarSalida;
 
     LinkedList* listaEmpleados = ll_newLinkedList();
@@ -103,7 +103,9 @@ int main()
             	break;
             case 6:
             	if (flag!=0) {
-					controller_ListEmployee(listaEmpleados);
+					if (controller_ListEmployee(listaEmpleados)==1) {
+						flag=2;
+					}
             	}
             	else {
             		printf ("\n\nERROR. No has cargado ninguna lista. Vuelva a intentar mas tarde\n");
@@ -118,12 +120,13 @@ int main()
             	else {
             		printf ("\n\nERROR. No has cargado ninguna lista. Vuelva a intentar mas tarde\n");
             	}
+            	systemPause("Presiones ENTER para continuar");
             	break;
             case 8:
             	if (flag!=0) {
                 	if (controller_saveAsText("data.csv", listaEmpleados)==1) {
                 		printf ("\n\nSe han guardado con exito los cambios");
-                		flag=2;
+                		flag=3;
                 	}
                     else {
                     	printf ("\n\nHa ocurrido un error. Intente nuevamente\n");
@@ -138,7 +141,7 @@ int main()
             	if (flag!=0) {
                 	if (controller_saveAsBinary("dataBinary.csv", listaEmpleados)==1) {
                 		printf ("\n\nSe han guardado con exito los cambios");
-                		flag=2;
+                		flag=3;
                 	}
                     else {
                     	printf ("\n\nHa ocurrido un error. Intente nuevamente\n");

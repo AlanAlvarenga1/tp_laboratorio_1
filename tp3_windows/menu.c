@@ -25,7 +25,8 @@ void mostrarMenu (int* opciones) {
 
 void subMenuModificacionEmpleado(int* opciones) {
 
-	printf ("1) Ingrese el ID del empleado que desea modificar\n"
+	printf ("\n\n-------------------MODIFICAR-------------------\n\n"
+			"1) Ingrese el ID del empleado que desea modificar\n"
 			"2) Modificar el nombre del empleado\n"
 			"3) Modificar las horas de trabajo\n"
 			"4) Modificar el sueldo del empleado\n"
@@ -37,15 +38,12 @@ void subMenuModificacionEmpleado(int* opciones) {
 
 void subMenuOrdenamiento(int* opciones) {
 
-	printf ("1) Ordenar por ID ascendiente\n"
-			"2) Ordenar por ID descendiente\n"
-			"3) Ordenar por nombre ascendiente\n"
-			"4) Ordenar por nombre descendiente\n"
-			"5) Ordenar por horas ascendientes\n"
-			"6) Ordenar por horas descendientes\n"
-			"7) Ordenar por sueldo ascendiente\n"
-			"8) Ordenar por sueldo descendiente\n"
-			"9) Salir del menu de modificar\n\n");
+	printf ("\n\n-------------------ORDENAMIENTO-------------------\n\n"
+			"1) Ordenar por ID \n"
+			"2) Ordenar por nombre\n"
+			"3) Ordenar por horas\n"
+			"4) Ordenar por sueldo\n"
+			"5) Salir del menu de modificar\n\n");
 
 			tomarInt (opciones,"Ingrese la opcion que deseas utilizar: ","ERROR. Has ingresado una opcion incorrecta. 1-9: ",1, 9);
 }

@@ -129,17 +129,107 @@ void save_modification (Employee* empleadoConDatos,Employee* empleadoAGuardar) {
 	empleadoAGuardar->horasTrabajadas=empleadoConDatos->horasTrabajadas;
 	empleadoAGuardar->sueldo=empleadoConDatos->sueldo;
 }
-int employee_searchLastID(LinkedList* this,int len) {
-	int retorno=0;
-	int i;
-	Employee* aux;
+int employee_searchLastID(FILE* idFile) {
+	char stringId[10];
+	int id=0;
 
-	for (i=1;i<len;i++) {
-		aux=ll_get(this,i);
-		retorno=aux->id;
+	fscanf(idFile,"%[^\n]",stringId);
+	id=atoi(stringId);
+
+	printf ("%d",id);
+
+	return id;
+}
+
+int employee_orderByID (void* employeeOne, void* employeeTwo) {
+	int retorno;
+
+	if (employeeOne!=NULL && employeeTwo!=NULL) {
+		int employeeOne_ID;
+		int employeeTwo_ID;
+		employee_getId(employeeOne,&employeeOne_ID);
+		employee_getId(employeeTwo,&employeeTwo_ID);
+
+		if (employeeOne_ID>employeeTwo_ID) {
+			retorno=1;
+		}
+		else if (employeeOne_ID<employeeTwo_ID) {
+			retorno=-1;
+		}
+		else {
+			retorno=0;
+		}
 	}
 
 	return retorno;
 }
 
+int employee_orderByName (void* employeeOne, void* employeeTwo) {
+	int retorno;
+
+	if (employeeOne!=NULL && employeeTwo!=NULL) {
+		char employeeOne_Name[maxChar];
+		char employeeTwo_Name[maxChar];
+		employee_getNombre(employeeOne,employeeOne_Name);
+		employee_getNombre(employeeTwo,employeeTwo_Name);
+
+		if (strcmp (employeeOne_Name,employeeTwo_Name)>0) {
+			retorno=1;
+		}
+		if (strcmp (employeeOne_Name,employeeTwo_Name)<0) {
+			retorno=-1;
+		}
+		else {
+			retorno=0;
+		}
+	}
+
+	return retorno;
+}
+
+int employee_orderByHours (void* employeeOne, void* employeeTwo) {
+	int retorno;
+
+	if (employeeOne!=NULL && employeeTwo!=NULL) {
+		int employeeOne_Hours;
+		int employeeTwo_Hours;
+		employee_getHorasTrabajadas(employeeOne,&employeeOne_Hours);
+		employee_getHorasTrabajadas(employeeTwo,&employeeTwo_Hours);
+
+		if (employeeOne_Hours>employeeTwo_Hours) {
+			retorno=1;
+		}
+		else if (employeeOne_Hours<employeeTwo_Hours) {
+			retorno=-1;
+		}
+		else {
+			retorno=0;
+		}
+	}
+
+	return retorno;
+}
+
+int employee_orderBySalary (void* employeeOne, void* employeeTwo) {
+	int retorno;
+
+	if (employeeOne!=NULL && employeeTwo!=NULL) {
+		int employeeOne_Salary;
+		int employeeTwo_Salary;
+		employee_getSueldo(employeeOne,&employeeOne_Salary);
+		employee_getSueldo(employeeTwo,&employeeTwo_Salary);
+
+		if (employeeOne_Salary>employeeTwo_Salary) {
+			retorno=1;
+		}
+		else if (employeeOne_Salary<employeeTwo_Salary) {
+			retorno=-1;
+		}
+		else {
+			retorno=0;
+		}
+	}
+
+	return retorno;
+}
 

@@ -34,6 +34,13 @@ int employee_getSueldo(Employee* this,int* sueldo);
 void printUnEmpleado(Employee* this);
 int employee_searchID(LinkedList* this,int idABuscar,int len);
 void save_modification (Employee* empleadoConDatos,Employee* empleadoAGuardar);
-int employee_searchLastID(LinkedList* this,int len);
+int employee_searchLastID(FILE* idFile);
+
+int employee_orderByID (void* employeeOne, void* employeeTwo);
+int employee_orderByName (void* employeeOne, void* employeeTwo);
+int employee_orderByHours (void* employeeOne, void* employeeTwo);
+int employee_orderBySalary (void* employeeOne, void* employeeTwo);
+
+
 
 #endif // employee_H_INCLUDED

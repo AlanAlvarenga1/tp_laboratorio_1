@@ -15,15 +15,19 @@ int parser_EmployeeFromText(FILE* pFile , LinkedList* pArrayListEmployee) {
 	char nombre[51];
 	char horasTrabajadas[10];
 	char sueldo[10];
-	Employee* unEmpleado;
+
 
 	if (pFile!=NULL && pArrayListEmployee!=NULL) {
+		fscanf(pFile, "%[^,],%[^,],%[^,],%[^\n]",id,nombre,horasTrabajadas,sueldo);
 		while (feof(pFile)==0) {
+			Employee* unEmpleado;
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^\n]",id,nombre,horasTrabajadas,sueldo);
-			if (feof(pFile)!=0) {
+
+			unEmpleado= employee_newParametros(id,nombre,horasTrabajadas,sueldo);
+
+			if (feof(pFile)) {
 				break;
 			}
-			unEmpleado= employee_newParametros(id,nombre,horasTrabajadas,sueldo);
 
 			if (unEmpleado!=NULL) {
 				ll_add(pArrayListEmployee, unEmpleado);
@@ -49,6 +53,9 @@ int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee) {
 	if (pFile!=NULL && pArrayListEmployee!=NULL) {
 		while (feof(pFile)==0) {
 			unEmpleado=employee_new();
+			if (feof(pFile)!=0) {
+				break;
+			}
 
 			if (fread(unEmpleado,sizeof(Employee),1,pFile)==1) {
 				ll_add(pArrayListEmployee, unEmpleado);
