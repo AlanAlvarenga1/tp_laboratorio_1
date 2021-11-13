@@ -24,12 +24,17 @@
 void mostrarMenu (int* opciones);
 /**
  * @fn void subMenuModificacionEstadia(int*)
- * @brief Muestra el submenu de la opcion 2
+ * @brief Muestra el submenu de modificacion
  *
- * @param opciones Toma la opcion solicitada y la devuelve al main
+ * @param opciones Toma la opcion solicitada y la devuelve a la funcion principal
  */
 void subMenuModificacionEmpleado(int* opciones);
-
+/**
+ * @fn void subMenuOrdenamiento(int*)
+ * @brief Muestra el submenu de  ordenamiento
+ *
+ * @param opciones Toma la opcion solicitada y la devuelve a la funcion principal
+ */
 void subMenuOrdenamiento(int* opciones);
 
 #endif /* SRC_MENU_H_ */

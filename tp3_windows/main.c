@@ -7,17 +7,11 @@
 #include "menu.h"
 
 /****************************************************
-    Menu:
-     1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).
-     2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).
-     3. Alta de empleado
-     4. Modificar datos de empleado
-     5. Baja de empleado
-     6. Listar empleados
-     7. Ordenar empleados
-     8. Guardar los datos de los empleados en el archivo data.csv (modo texto).
-     9. Guardar los datos de los empleados en el archivo data.csv (modo binario).
-    10. Salir
+    NOTA: En mi pc no dejaba modificar el archivo dado
+    en el rar del TP, por lo que en mi caso tenia que
+    guardarlo como Binario, cargarlo de ese modo y dejar
+    que se cree un nuevo archivo de texto, guardandolo
+    de ese modo
 *****************************************************/
 
 

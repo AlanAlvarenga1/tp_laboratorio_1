@@ -102,12 +102,10 @@ void printUnEmpleado(Employee* this) {
 int employee_searchID(LinkedList* this,int idABuscar,int len) {
 	int i;
 	int retorno=-1;
-//	int auxID;
 	Employee* aux;
 
 	for (i=1;i<len;i++) {
 		aux=(Employee*)ll_get(this,i);
-		//employee_getId(aux,&auxID);
 
 		if (aux->id==idABuscar) {
 			retorno=i;
@@ -123,10 +121,9 @@ void save_modification (Employee* empleadoConDatos,Employee* empleadoAGuardar) {
 	empleadoAGuardar->horasTrabajadas=empleadoConDatos->horasTrabajadas;
 	empleadoAGuardar->sueldo=empleadoConDatos->sueldo;
 }
-int employee_searchLastID(void) {
+void employee_searchLastID(int* id) {
 	FILE* fileID;
 	char stringId[10];
-	int id=0;
 
 	fileID=fopen("lastID.txt","w");
 
@@ -136,11 +133,9 @@ int employee_searchLastID(void) {
 	fileID=fopen("lastID.txt","r");
 
 	fscanf(fileID,"%[^\n]",stringId);
-	id=atoi(stringId);
+	*id=atoi(stringId);
 
 	fclose(fileID);
-
-	return id;
 }
 void employee_saveLastID(char* lastID) {
 	FILE* fileID;
@@ -150,7 +145,7 @@ void employee_saveLastID(char* lastID) {
 	fclose(fileID);
 }
 
-int employee_orderByID (void* employeeOne, void* employeeTwo) {
+int employee_orderID (void* employeeOne, void* employeeTwo) {
 	int retorno;
 
 	if (employeeOne!=NULL && employeeTwo!=NULL) {
@@ -173,7 +168,7 @@ int employee_orderByID (void* employeeOne, void* employeeTwo) {
 	return retorno;
 }
 
-int employee_orderByName (void* employeeOne, void* employeeTwo) {
+int employee_orderName (void* employeeOne, void* employeeTwo) {
 	int retorno;
 
 	if (employeeOne!=NULL && employeeTwo!=NULL) {
@@ -188,7 +183,7 @@ int employee_orderByName (void* employeeOne, void* employeeTwo) {
 	return retorno;
 }
 
-int employee_orderByHours (void* employeeOne, void* employeeTwo) {
+int employee_orderHours (void* employeeOne, void* employeeTwo) {
 	int retorno;
 
 	if (employeeOne!=NULL && employeeTwo!=NULL) {
@@ -211,7 +206,7 @@ int employee_orderByHours (void* employeeOne, void* employeeTwo) {
 	return retorno;
 }
 
-int employee_orderBySalary (void* employeeOne, void* employeeTwo) {
+int employee_orderSalary (void* employeeOne, void* employeeTwo) {
 	int retorno;
 
 	if (employeeOne!=NULL && employeeTwo!=NULL) {
