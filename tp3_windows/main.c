@@ -103,9 +103,7 @@ int main()
             	break;
             case 6:
             	if (flag!=0) {
-					if (controller_ListEmployee(listaEmpleados)==1) {
-						flag=2;
-					}
+					controller_ListEmployee(listaEmpleados);
             	}
             	else {
             		printf ("\n\nERROR. No has cargado ninguna lista. Vuelva a intentar mas tarde\n");

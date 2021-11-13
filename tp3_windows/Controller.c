@@ -60,7 +60,6 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee) {
 int controller_addEmployee(LinkedList* pArrayListEmployee) {
 	int retorno=0;
 	Employee* nuevoEmpleado;
-	FILE* lastID;
 	int intID;
 	char id[10];
 	char nombre[maxChar];
@@ -69,9 +68,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee) {
 	int confirmar=0;
 
 	if (pArrayListEmployee!=NULL) {
-    	lastID=fopen("lastID.txt","r");
-		intID=employee_searchLastID(lastID);
-		fclose(lastID);
+		intID=employee_searchLastID();
 
 		while (confirmar==0) {
 			itoa(intID+1,id,10);
@@ -92,6 +89,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee) {
 					nuevoEmpleado=employee_new();
 					nuevoEmpleado=employee_newParametros(id,nombre,horasTrabajadas,sueldo);
 					ll_add(pArrayListEmployee,nuevoEmpleado);
+					employee_saveLastID(id);
 					retorno=1;
 					break;
 				case 0:
@@ -130,13 +128,12 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 	int horasAModificar;
 	int sueldoAModificar;
 
-	int lastID=employee_searchLastID;
+	int lastID=employee_searchLastID();
 	Employee* empleadoAModificar;
 	Employee aux;
 
 	if (pArrayListEmployee!=NULL) {
 		do {
-			printf ("\n\n-------------------MODIFICACION-------------------\n\n");
 			if (flag!=-1) {
 				printf ("------------------------------------------------------------------------------------------------------------------------------\n");
 				printf ("%-10s %-25s %-25s %s","ID","Nombre","Horas laborales","Sueldo");
@@ -351,7 +348,7 @@ int controller_editEmployee(LinkedList* pArrayListEmployee) {
 int controller_removeEmployee(LinkedList* pArrayListEmployee) {
 	int retorno=0;
 	int id;
-	int lastID=employee_searchLastID;
+	int lastID=employee_searchLastID();
 	int confirmacion=0; //-1 SALIR	0 NO	1 SI
 	int posicionEmployee;
 	Employee* empleadoAEliminar;
@@ -447,30 +444,38 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee) {
 				case 1:
 					pFunc=&employee_orderByID;
 					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
-					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
-
-					retorno=1;
+					if (ll_sort(pArrayListEmployee,pFunc,tipoDeOrden)==0) {
+						printf("\nSe ha ordenado la lista con exito!\n");
+						retorno=1;
+					}
+	            	systemPause("Presiones ENTER para continuar");
 					break;
 				case 2:
 					pFunc=&employee_orderByName;
 					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
-					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
-
-					retorno=1;
+					if (ll_sort(pArrayListEmployee,pFunc,tipoDeOrden)==0) {
+						printf("\nSe ha ordenado la lista con exito!\n");
+						retorno=1;
+					}
+	            	systemPause("Presiones ENTER para continuar");
 					break;
 				case 3:
 					pFunc=&employee_orderByHours;
 					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
-					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
-
-					retorno=1;
+					if (ll_sort(pArrayListEmployee,pFunc,tipoDeOrden)==0) {
+						printf("\nSe ha ordenado la lista con exito!\n");
+						retorno=1;
+					}
+	            	systemPause("Presiones ENTER para continuar");
 					break;
 				case 4:
 					pFunc=&employee_orderBySalary;
 					tomarInt(&tipoDeOrden,"\n\nDesea ordenarlo de manera ascendente o descendente? 1=ASCENDENTE 0=DESCENDENTE: ","\nERROR. Has ingresado un caracter invalido. Intente nuevamente: ",0,1);
-					ll_sort(pArrayListEmployee,pFunc,tipoDeOrden);
-
-					retorno=1;
+					if (ll_sort(pArrayListEmployee,pFunc,tipoDeOrden)==0) {
+						printf("\nSe ha ordenado la lista con exito!\n");
+						retorno=1;
+					}
+	            	systemPause("Presiones ENTER para continuar");
 					break;
 				case 5:
 					printf("\n\nSaliendo......\n");
@@ -540,8 +545,6 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee) {
     	for (int i=0;i<llTam;i++) {
     		aux=(Employee*)ll_get(pArrayListEmployee,i);
     		fwrite(aux,sizeof(Employee),1,pFile);
-
-    		printf ("\n\n%s\n",aux->nombre);
     	}
     	fclose(pFile);
     	retorno=1;

@@ -22,14 +22,8 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
 	return empleado;
 }
 void employee_delete(Employee* this) {
-//	int retorno=0;
-
-	if (this!=NULL) {
-		free(this);
-		//retorno=1;
-	}
-
-	//return retorno;
+	free(this);
+	this=NULL;
 }
 
 int employee_setId(Employee* this,int id) {
@@ -129,16 +123,31 @@ void save_modification (Employee* empleadoConDatos,Employee* empleadoAGuardar) {
 	empleadoAGuardar->horasTrabajadas=empleadoConDatos->horasTrabajadas;
 	empleadoAGuardar->sueldo=empleadoConDatos->sueldo;
 }
-int employee_searchLastID(FILE* idFile) {
+int employee_searchLastID(void) {
+	FILE* fileID;
 	char stringId[10];
 	int id=0;
 
-	fscanf(idFile,"%[^\n]",stringId);
+	fileID=fopen("lastID.txt","w");
+
+	fprintf(fileID,"%s","1000");
+	fclose(fileID);
+
+	fileID=fopen("lastID.txt","r");
+
+	fscanf(fileID,"%[^\n]",stringId);
 	id=atoi(stringId);
 
-	printf ("%d",id);
+	fclose(fileID);
 
 	return id;
+}
+void employee_saveLastID(char* lastID) {
+	FILE* fileID;
+	fileID=fopen("lastID.txt","w");
+
+	fprintf(fileID,"%s",lastID);
+	fclose(fileID);
 }
 
 int employee_orderByID (void* employeeOne, void* employeeTwo) {
@@ -173,15 +182,7 @@ int employee_orderByName (void* employeeOne, void* employeeTwo) {
 		employee_getNombre(employeeOne,employeeOne_Name);
 		employee_getNombre(employeeTwo,employeeTwo_Name);
 
-		if (strcmp (employeeOne_Name,employeeTwo_Name)>0) {
-			retorno=1;
-		}
-		if (strcmp (employeeOne_Name,employeeTwo_Name)<0) {
-			retorno=-1;
-		}
-		else {
-			retorno=0;
-		}
+		retorno=strcmp(employeeOne_Name,employeeTwo_Name);
 	}
 
 	return retorno;

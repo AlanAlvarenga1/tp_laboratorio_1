@@ -45,5 +45,5 @@ void subMenuOrdenamiento(int* opciones) {
 			"4) Ordenar por sueldo\n"
 			"5) Salir del menu de modificar\n\n");
 
-			tomarInt (opciones,"Ingrese la opcion que deseas utilizar: ","ERROR. Has ingresado una opcion incorrecta. 1-9: ",1, 9);
+			tomarInt (opciones,"Ingrese la opcion que deseas utilizar: ","ERROR. Has ingresado una opcion incorrecta. 1-5: ",1, 5);
 }
