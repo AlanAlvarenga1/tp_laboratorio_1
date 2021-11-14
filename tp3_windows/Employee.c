@@ -125,11 +125,6 @@ void employee_searchLastID(int* id) {
 	FILE* fileID;
 	char stringId[10];
 
-	fileID=fopen("lastID.txt","w");
-
-	fprintf(fileID,"%s","1000");
-	fclose(fileID);
-
 	fileID=fopen("lastID.txt","r");
 
 	fscanf(fileID,"%[^\n]",stringId);
