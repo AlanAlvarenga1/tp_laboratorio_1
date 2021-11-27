@@ -22,7 +22,7 @@ int main(void) {
 	int option=0;
 	int idToRemove;
 	int employeeQuantity;
-	int lastID;
+	int lastID=0;
 
 	initEmployees(newCompany, maxEmployee);
 	hardCodeEmployee(newCompany,&lastID,&employeeQuantity,3);
@@ -34,28 +34,34 @@ int main(void) {
 			case 1:
 				if (checkAndAddEmployee (newCompany,&lastID,maxEmployee,maxChar)!=-1) {
 					employeeQuantity++;
+					printf ("Se ha cargado el empleado exitosamente\n\n");
 				}
+            	systemPause("Presiones ENTER para continuar");
 				break;
 			case 2:
 				if (employeeQuantity>0) {
-					printf ("Entering on the modification menu....");
+					printf ("\nEntrando en el menu de modificaciones....");
 					modifyEmployee (newCompany);
 				}
 				else {
-					printf ("ERROR. There isn't any employee added. Use the first option and try again.");
+					printf ("\nNo hay empleados cargados. Utilice la primer opcion.");
 				}
+            	systemPause("Presiones ENTER para continuar");
 				break;
 			case 3:
 				if (employeeQuantity>0) {
-					enterInt("Enter the ID of the employee: ","ERROR. You entered an illegal character. Try again\n",&idToRemove,1,6);
+					printEmployees(newCompany,maxEmployee);
+
+					enterInt("\n\nIngresa el ID a eliminar: ","ERROR. Has ingresado un caracter invalido. Intentelo nuevamente: ",&idToRemove,1,1500);
 					if (removeEmployee (newCompany,maxEmployee,idToRemove)==0) {
 						employeeQuantity--;
-						printf ("The employee was deleted successfully");
+						printf ("\nEl empleado fue eliminado exitosamente");
 					}
 				}
 				else {
-					printf ("ERROR. There isn't any employee added. Use the first option and try again.");
+					printf ("\nNo hay empleados cargados. Utilice la primer opcion.");
 				}
+            	systemPause("Presiones ENTER para continuar");
 				break;
 			case 4:
 				if (employeeQuantity>0) {
@@ -64,15 +70,16 @@ int main(void) {
 						salaryChecker(newCompany,employeeQuantity,maxEmployee);
 					}
 					else {
-						printf ("ERROR. Check the code, you must put 0(Up) or 1(Down) on order");
+						printf ("\nERROR. Chequea el codigo, debes poner 0(Ascendente) o 1(Descendente)");
 					}
 				}
 				else {
-					printf ("ERROR. There isn't any employee added. Use the first option and try again.");
+					printf ("\nNo hay empleados cargados. Utilice la primer opcion.");
 				}
+            	systemPause("Presiones ENTER para continuar");
 				break;
 			case 5:
-				printf ("Thank you for using this program. Bye!!");
+				printf ("\n\nGracias por utilizar este programa!");
 				break;
 		}
 	}

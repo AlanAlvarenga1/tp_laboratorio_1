@@ -16,9 +16,6 @@
 #include "inputs.h"
 #include "menu.h"
 
-#define maxEmployee 1000
-#define maxChar 51
-
 #define TRUE 1
 #define FALSE 0
 

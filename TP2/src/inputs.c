@@ -31,32 +31,48 @@ int enterInt (char* startMessage,char* errorMessage,int* number,int min,int max)
 }
 
 int enterString (char* startMessage,char* errorMessage, char* string, int len) {
-    int size;
-    int i;
+    char auxString[maxChar];
+	int size;
     int returnal=-1;
 
     if (startMessage!=NULL && errorMessage!=NULL) {
+
 		printf ("%s",startMessage);
 		fflush (stdin);
-		fgets (string, len,stdin);
-		size=strlen (string);
-		string[size-1] = 32;
+		scanf("%[^\n]",auxString);
+		size=strlen(auxString);
 
-		for (i=0;i<size-1;i++) {
-			while (isalpha(string[i])==0) {
-				printf ("%s",errorMessage);
-				fflush (stdin);
-				fgets (string, len,stdin);
-				size=strlen (string);
-				string[size-1] = 32;
+		checkString(auxString,size);
 
-				i=0;
-			}
+		while (checkString(auxString,size)==-1) {
+			printf ("%s",errorMessage);
+			fflush (stdin);
+			scanf("%[^\n]",auxString);
+			size=strlen(auxString);
+
+			checkString(auxString,size);
 		}
+		strcpy(string,auxString);
 		returnal=0;
     }
 	return returnal;
 }
+int checkString(char* string,int len) {
+	int i;
+	int returnal=-1;
+
+	if (len>1) {
+		for (i=0;i<len-1;i++) {
+			if ((isalpha(string[i])!=0) || string[i]==32) {
+				returnal=0;
+				break;
+			}
+		}
+	}
+
+	return returnal;
+}
+
 
 int enterFloat (char* startMessage,char* errorMessage,float* number,int min,int max) {
     float checkvar;
@@ -78,5 +94,17 @@ int enterFloat (char* startMessage,char* errorMessage,float* number,int min,int 
 	}
 
     return returnal;
+}
+
+int systemPause(char* message) {
+	int ret=-1;
+	if(message!=NULL)
+	{
+		fflush(stdin);
+		printf("\n%s",message);
+		getchar();
+		ret=0;
+	}
+	return ret;
 }
 

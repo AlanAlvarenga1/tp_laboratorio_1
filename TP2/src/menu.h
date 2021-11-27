@@ -28,7 +28,7 @@ void showMenu (int* options);
  * @param id This id will be showed to the user, to know what employee is editing
  * @param flag This var indicates if the ID was entered
  */
-void subMenuModification(int *options,int id,int flag);
+void subMenuModification(int *options);
 
 
 #endif /* MENU_H_ */

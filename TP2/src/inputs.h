@@ -13,6 +13,9 @@
 #include <string.h>
 #include <ctype.h>
 
+#define maxEmployee 1000
+#define maxChar 51
+
 
 /**
  * @fn int enterInt(char*, char*, int*, int, int)
@@ -38,6 +41,15 @@ int enterInt (char* startMessage,char* errorMessage,int* number,int min,int max)
  */
 int enterString (char* startMessage,char* errorMessage, char* string, int len);
 /**
+ * @fn int checkString(char*, int)
+ * @brief Checks if the string entered is ok
+ *
+ * @param string String to check
+ * @param len Lenght of the string
+ * @return It returns 0 if it's ok, or -1 if there's an error
+ */
+int checkString(char* string,int len);
+/**
  * @fn int enterFloat(char*, char*, float*, int, int)
  * @brief This function allows to enter an float
  *
@@ -49,6 +61,14 @@ int enterString (char* startMessage,char* errorMessage, char* string, int len);
  * @return It returns 0 if the funcion worked ok, or -1 if it has an error
  */
 int enterFloat (char* startMessage,char* errorMessage,float* number,int min,int max);
+/**
+ * @fn int systemPause(char*)
+ * @brief Pausa el sistema para solicitar que se toque ENTER para continuar
+ *
+ * @param message Mensaje impreso al momento de frenar el sistema
+ * @return Retorna 1 si salio mal, 0 si salio bien
+ */
+int systemPause(char* message);
 
 
 

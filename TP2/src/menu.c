@@ -11,36 +11,24 @@
 void showMenu (int* options) {
 
 	printf ("\n\n-------------------MENU-------------------\n\n"
-			"1) Add an employee\n"
-			"2) Modify an employee\n"
-			"3) Remove an employee\n"
-			"4) Show employees\n"
-			"5) Exit\n\n");
+			"1) Añadir un empleado\n"
+			"2) Modificar un empleado\n"
+			"3) Eliminar un empleado\n"
+			"4) Mostrar empleados\n"
+			"5) Salir\n\n");
 
-	enterInt("Enter the option you want to use: ","ERROR. Enter a correct option. 1-5: ",options,1,5);
+	enterInt("Ingrese la opcion que deseas utilizar: ","ERROR. Ingrese una opcion correcta. 1-5: ",options,1,5);
 
 }
 
-void subMenuModification(int *options,int id,int flag) {
-	int checkVar;
+void subMenuModification(int *options) {
 
-	printf ("\n\n-------------------MODIFICATION-------------------\n\n");
-	if (flag!=-1) {
-		printf ("The selected employee has the following ID: %d\n",id);
-	}
-	printf ("1) Enter the employee ID\n"
-			"2) Modify the name\n"
-			"3) Modify the last name\n"
-			"4) Modify the salary\n"
-			"5) Modify the sector\n"
-			"6) Exit\n\n"
-			"Enter the option you want to use: ");
-	fflush (stdin);
-	checkVar=scanf ("%d",options);
+	printf ("1) Ingrese el ID del empleado a modificar\n"
+			"2) Modificar el nombre\n"
+			"3) Modificar el apellido\n"
+			"4) Modificar el salario\n"
+			"5) Modificar el sector\n"
+			"6) Salir\n\n");
 
-	while (checkVar==0 || (*options<1 && *options>7)) {
-		printf ("ERROR. Enter a correct option. 1-6: ");
-		fflush (stdin);
-		checkVar=scanf ("%d",options);
-	}
+	enterInt("Ingrese la opcion que desesas utilizar: ","ERROR. Ingrese una opcion correcta. 1-6: ",options,1,6);
 }
